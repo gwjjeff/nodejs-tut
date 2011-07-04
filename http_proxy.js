@@ -26,6 +26,9 @@ net.createServer(function (client){
 			if (_body_pos < 0) _body_pos = buffer.length;
 			var header = buffer.slice(0,_body_pos).toString('utf8');
 			//替换connection头
+			console.log('=======================================================================before');
+			console.log(header);
+			console.log('=======================================================================');
 			header = header.replace(/(proxy\-)?connection\:.+\r\n/ig,'')
 				.replace(/Keep\-Alive\:.+\r\n/i,'')
 				.replace("\r\n",'\r\nConnection: close\r\n');
@@ -34,6 +37,9 @@ net.createServer(function (client){
 				var url = req.path.replace(/http\:\/\/[^\/]+/,'');
 				if (url.path != url) header = header.replace(req.path,url);
 			}
+			console.log('=======================================================================after');
+			console.log(header);
+			console.log('=======================================================================');
 			buffer = buffer_add(new Buffer(header,'utf8'),buffer.slice(_body_pos));
 		}
 
