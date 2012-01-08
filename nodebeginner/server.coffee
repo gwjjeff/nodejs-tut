@@ -1,14 +1,13 @@
 http = require "http"
 url = require "url"
-start = (route) ->
+start = (route, handle) ->
     onRequest = (request, response) ->
         pathname = url.parse(request.url).pathname
         console.log "Request for #{pathname} received."
 
-        route pathname
-
         response.writeHead 200, "Content-Type": "text/plain"
-        response.write "Hello World"
+        content = route handle, pathname
+        response.write content
         response.end()
 
     http.createServer(onRequest).listen 8888
