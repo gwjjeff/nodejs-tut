@@ -1,11 +1,11 @@
+exec = (require "child_process").exec
+
 start = ->
-    noop = ->
-    sleep = (millis) ->
-        startTime = new Date().getTime()
-        noop() while new Date().getTime() < startTime + millis
-    sleep 10000
     console.log "Request handler 'start' was called."
-    "Hello start"
+    content = "empty"
+    exec "ls -lah", (error, stdout, stderr) ->
+        content = stdout
+    content
 
 upload = ->
     console.log "Request handler 'upload' was called."
