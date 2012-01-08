@@ -1,15 +1,18 @@
 exec = (require "child_process").exec
 
-start = ->
+start = (response) ->
     console.log "Request handler 'start' was called."
-    content = "empty"
-    exec "ls -lah", (error, stdout, stderr) ->
-        content = stdout
-    content
 
-upload = ->
+    exec "ls -lah", (error, stdout, stderr) ->
+        response.writeHead 200, "Content-Type": "text/plain"
+        response.write stdout
+        response.end()
+
+upload = (response) ->
     console.log "Request handler 'upload' was called."
-    "Hello 上传"
+    response.writeHead 200, "Content-Type": "text/plain"
+    response.write "Hello 上传"
+    response.end()
 
 exports.start = start
 exports.upload = upload
