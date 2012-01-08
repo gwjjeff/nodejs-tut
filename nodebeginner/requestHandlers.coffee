@@ -3,7 +3,7 @@ exec = (require "child_process").exec
 start = (response) ->
     console.log "Request handler 'start' was called."
 
-    exec "ls -lah", (error, stdout, stderr) ->
+    exec "find /", { timeout: 5000, maxBuffer: 20000*1024 }, (error, stdout, stderr) ->
         response.writeHead 200, "Content-Type": "text/plain"
         response.write stdout
         response.end()
