@@ -1,6 +1,4 @@
-exec = (require "child_process").exec
-
-start = (response) ->
+start = (response, postData) ->
     console.log "Request handler 'start' was called."
     body = """
     <html>
@@ -10,6 +8,7 @@ start = (response) ->
         <body>
             <form action="/upload" method="post">
                 <textarea name="text" rows="20" cols="60"></textarea>
+                <input type="submit" value="提交" />
             </form>
         </body>
     </html>
@@ -19,10 +18,10 @@ start = (response) ->
     response.write body
     response.end()
 
-upload = (response) ->
+upload = (response, postData) ->
     console.log "Request handler 'upload' was called."
     response.writeHead 200, "Content-Type": "text/plain"
-    response.write "Hello 上传"
+    response.write "You've sent: #{postData}"
     response.end()
 
 exports.start = start
