@@ -35,9 +35,9 @@ class User
 
 # Dummy users
 users = [
-    new User 'Tobi', 'tobi@learnboost.com'
-  , new User 'Loki', 'loki@learnboost.com'
-  , new User 'Jane', 'jane@learnboost.com'
+    new User('Tobi', 'tobi@learnboost.com')
+  , new User('Loki', 'loki@learnboost.com')
+  , new User('Jane', 'jane@learnboost.com')
 ]
 
 app.get '/', (req, res) ->
