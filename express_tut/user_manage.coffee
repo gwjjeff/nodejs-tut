@@ -3,21 +3,17 @@ app = express.createServer()
 
 users = [{name: 'www.csser.com'}]
 
-app.all '/user/:id/:op?', (req, res, next) ->
-    req.user = users[req.params.id]
-    if req.user
+loadUser = (req, res, next) ->
+    user = users[req.params.id]
+    if user
+        req.user = user
         next()
     else
-        next(new Error "cannot find user #{req.params.id}")
+        next(new Error "不存在的用户 #{req.params.id}")
 
-app.get '/user/:id', (req, res) ->
+app.get '/user/:id', loadUser, (req, res) ->
     res.send "viewing #{req.user.name}"
 
-app.get '/user/:id/edit', (req, res) ->
-    res.send "editing #{req.user.name}"
-
-app.get '/user/:id', (req, res) ->
-    res.send "updating #{req.user.name}"
 
 app.get '*', (req, res) ->
     res.send 'what???', 404
