@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>coffee web console</title>
+		<link rel="stylesheet" type="text/css" href="coffee_test.css">
+		<link rel="stylesheet" type="text/css" href="sh_style.css">
+    </head>
+    <body>
+        <div id="error"></div>
+        <div id="repl_container" class="code">
+        	<div id="repl_source_wrap">
+        		<textarea id="repl_source" rows="100" spellcheck="false">alert "Hello CoffeeScript!"</textarea>
+        	</div>
+        	<div id="repl_results_wrap">
+        		<pre id="repl_results" class="sh_javascript"></pre>
+        	</div>
+        </div>
+        <div id="command_pannel">
+        	<div class="minibutton run">Run</div>
+        	<a id="repl_permalink">Link</a>
+        </div>
+  <script type="text/coffeescript">
+    sourceFragment = "try:"
+
+    # Set up the compilation function, to run when you stop typing.
+    compileSource = ->
+      source = $('#repl_source').val()
+      window.compiledJS = ''
+      try
+        window.compiledJS = CoffeeScript.compile source, bare: on
+        el = $('#repl_results')[0]
+        if el.innerText
+          el.innerText = window.compiledJS
+        else
+          $(el).text window.compiledJS
+        sh_highlightDocument()
+        $('#error').hide()
+      catch error
+        $('#error').text(error.message).show()
+
+      # Update permalink
+      $('#repl_permalink').attr 'href', "##{sourceFragment}#{encodeURIComponent source}"
+
+    # Listen for keypresses and recompile.
+    $('#repl_source').keyup -> compileSource()
+
+    # Eval the compiled js.
+    evalJS = ->
+      try
+        eval window.compiledJS
+      catch error then alert error
+
+    $('.minibutton.run').click evalJS
+    
+    # Load the console with a string of CoffeeScript.
+    window.loadConsole = (coffee) ->
+      $('#repl_source').val coffee
+      compileSource()
+      $('.navigation.try').addClass('active')
+      false
+      
+    # If source code is included in location.hash, display it.
+    hash = decodeURIComponent location.hash.replace(/^#/, '')
+    if hash.indexOf(sourceFragment) == 0
+        src = hash.substr sourceFragment.length
+        loadConsole src
+
+    compileSource()
+
+  </script>
+		<script src="jquery-1.7.1.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="extras/coffee-script.js"></script>
+		<script src="sh_main.min.js"></script>
+		<script src="sh_javascript.js"></script>
+    </body>
+</html>
