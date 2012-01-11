@@ -26,11 +26,15 @@ io.sockets.on 'connection', (socket) ->
 
 ### browser client ( with coffeescirpt )
 window.socket ?= io.connect '/'
-socket.removeAllListeners('news')
+socket.removeAllListeners 'news'
+socket.removeAllListeners 'connect'
+socket.removeAllListeners 'disconnect'
+
 socket.on 'news', (data) ->
     alert data.msg
+socket.on 'connect', ->
+    alert 'connected'
 socket.on 'disconnect', ->
     alert 'disconnected'
-socket.emit 'my other event', my: 'doooo'
-
+socket.emit 'my other event', my: 'doooo12'
 ###
