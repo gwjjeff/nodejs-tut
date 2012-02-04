@@ -7,6 +7,6 @@ app.use express.errorHandler({ dump: true, stack: true })
 port = process.env.VMC_APP_PORT || 3000
 host = process.env.VCAP_APP_HOST || 'localhost'
 
-app.listen host, port
-console.log "server #{__filename} started on prot: #{port} host: #{host}"
+app.listen port, host
+console.log "server #{__filename} started on: \nport: #{port} \nhost: #{host}"
 
