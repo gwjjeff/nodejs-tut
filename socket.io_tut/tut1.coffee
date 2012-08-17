@@ -1,8 +1,10 @@
 io = require 'socket.io'
 express = require 'express'
+http = require 'http'
 
-app = express.createServer()
-io = io.listen(app)
+app = express()
+server = http.createServer(app)
+io = io.listen(server)
 
 app.configure ->
     app.use express.static "#{__dirname}/public"
@@ -16,7 +18,7 @@ io.configure ->
     , 'jsonp-polling'
     ]
 
-app.listen 8888
+server.listen 8888
 
 io.sockets.on 'connection', (socket) ->
     socket.emit 'news', msg: 'hello world'
